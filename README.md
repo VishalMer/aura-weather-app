@@ -8,7 +8,7 @@
 <img src="https://img.shields.io/badge/TailwindCSS-4.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
 <img src="https://img.shields.io/badge/Vite-7.x-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
 <img src="https://img.shields.io/badge/JWT-Auth-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
-<img src="https://img.shields.io/badge/Deployed-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+<img src="https://img.shields.io/badge/Deployed-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" />
 
 <br />
 <br />
@@ -26,7 +26,7 @@
 ## 🎬 Demo
 
 <div align="center">
-  <img src="https://placehold.co/900x500/1a1a2e/61DAFB?text=App+Demo+GIF+Coming+Soon" alt="Aura Weather App Demo" width="100%" style="border-radius: 12px;" />
+  <img src="https://placehold.co/900x500/1a1a2e/61DAFB?text=App+Demo+GIF+Coming+Soon" alt="Aura Weather App Demo" width="100%" />
   <p><em>Add your screen recording GIF here</em></p>
 </div>
 
@@ -36,7 +36,7 @@
 
 - 🔐 **JWT Authentication** — Secure register & login with bcrypt password hashing
 - 🌍 **Real-Time Weather** — Current conditions powered by a live weather API
-- 📅 **5-Day Forecast** — Detailed day-by-day weather breakdown
+- 📅 **5-Day Forecast** — Detailed day-by-day and hourly weather breakdown
 - ⭐ **Favorites** — Save and manage your go-to cities
 - 🕒 **Search History** — Revisit your recent weather lookups
 - 🎨 **Dynamic Backgrounds** — Weather-reactive UI that changes with conditions
@@ -75,48 +75,74 @@
 ```
 aura/
 ├── backend/
-│   ├── config/           # DB connection & environment config
-│   ├── controllers/      # Route handler logic
-│   │   ├── authController.js
-│   │   ├── weatherController.js
-│   │   ├── favoriteController.js
-│   │   └── historyController.js
-│   ├── middleware/       # Auth guard & error handlers
-│   ├── models/           # Mongoose schemas (User, Favorite, History)
-│   ├── routes/           # Express route definitions
+│   ├── config/
+│   │   └── db.js                   # MongoDB connection
+│   ├── controllers/
+│   │   ├── authController.js       # Register & login logic
+│   │   ├── weatherController.js    # Weather & forecast logic
+│   │   └── favoriteController.js   # Favorites CRUD logic
+│   ├── middleware/
+│   │   ├── authMiddleware.js       # JWT verification guard
+│   │   └── optionalAuth.js         # Optional auth (public routes)
+│   ├── models/
+│   │   ├── User.js                 # User schema
+│   │   ├── Favorite.js             # Saved cities schema
+│   │   ├── SearchHistory.js        # Search history schema
+│   │   └── WeatherCache.js         # Cached weather data schema
+│   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── weatherRoutes.js
 │   │   ├── favoriteRoutes.js
 │   │   └── historyRoutes.js
-│   ├── utils/            # Helper utilities
-│   └── server.js         # Entry point
+│   ├── utils/
+│   │   └── generateToken.js        # JWT token generator
+│   └── server.js                   # Entry point
 │
 └── frontend/
     ├── public/
     └── src/
-        ├── components/   # Reusable UI components
-        │   ├── Header.jsx
-        │   ├── SearchBar.jsx
-        │   ├── WeatherCard.jsx
-        │   ├── WeatherDetails.jsx
-        │   ├── WeatherBackground.jsx
-        │   ├── ForecastCard.jsx
-        │   ├── WelcomeSection.jsx
-        │   ├── Loader.jsx
+        ├── assets/
+        │   └── icons/              # Weather condition icons (PNG)
+        ├── components/
+        │   ├── forecast/           # Forecast-specific components
+        │   │   ├── DailyForecastCard.jsx
+        │   │   ├── DayDetailsCard.jsx
+        │   │   ├── ForecastHeader.jsx
+        │   │   ├── ForecastSearch.jsx
+        │   │   ├── HourlyForecast.jsx
+        │   │   ├── TemperatureTrend.jsx
+        │   │   └── index.js
         │   ├── ErrorMessage.jsx
         │   ├── Footer.jsx
-        │   └── ProtectedRoute.jsx
-        ├── context/      # React Context (Auth state)
-        ├── hooks/        # Custom React hooks
-        ├── pages/        # App pages / views
+        │   ├── ForecastCard.jsx
+        │   ├── Header.jsx
+        │   ├── Loader.jsx
+        │   ├── ProtectedRoute.jsx
+        │   ├── SearchBar.jsx
+        │   ├── WeatherBackground.jsx
+        │   ├── WeatherCard.jsx
+        │   ├── WeatherDetails.jsx
+        │   ├── WelcomeSection.jsx
+        │   └── index.js
+        ├── context/
+        │   └── AuthContext.jsx     # Global auth state (React Context)
+        ├── hooks/
+        │   └── useAuth.js          # Auth context consumer hook
+        ├── pages/
         │   ├── Home.jsx
         │   ├── Forecast.jsx
         │   ├── Favorites.jsx
         │   ├── History.jsx
         │   ├── Login.jsx
-        │   └── Register.jsx
-        ├── services/     # Axios API service layer
+        │   ├── Register.jsx
+        │   └── index.js
+        ├── services/
+        │   ├── api.js              # Axios base instance
+        │   ├── authService.js      # Auth API calls
+        │   ├── favoriteService.js  # Favorites API calls
+        │   └── weatherService.js   # Weather API calls
         ├── App.jsx
+        ├── index.css
         └── main.jsx
 ```
 
@@ -143,7 +169,7 @@ cd backend
 # 2. Install dependencies
 npm install
 
-# 3. Create environment file (see below for variables)
+# 3. Create your environment file (see variables below)
 cp .env.example .env
 
 # 4. Start the development server
@@ -163,7 +189,7 @@ cd frontend
 # 2. Install dependencies
 npm install
 
-# 3. Create environment file
+# 3. Create your environment file
 cp .env.example .env
 
 # 4. Start the development server
@@ -216,20 +242,31 @@ VITE_API_BASE_URL=http://localhost:5000/api
 
 ## 🌐 Deployment
 
-| Part | Platform | Status |
+Both the frontend and backend are deployed on **[Render](https://render.com)**.
+
+| Part | Platform | Type |
 |---|---|---|
-| Frontend | [Vercel](https://vercel.com) | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new) |
-| Backend | [Render](https://render.com) / [Railway](https://railway.app) | — |
-| Database | [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) | — |
+| Frontend | [Render](https://render.com) | Static Site |
+| Backend | [Render](https://render.com) | Web Service (Node.js) |
+| Database | [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) | Cloud Database |
 
-### Frontend (Vercel)
-The `frontend/vercel.json` is already configured for SPA routing. Simply connect your GitHub repo to Vercel and set the root directory to `frontend`.
+### Backend (Render Web Service)
+1. Create a new **Web Service** on Render and connect your GitHub repo
+2. Set the **Root Directory** to `backend`
+3. Set **Build Command** to `npm install`
+4. Set **Start Command** to `npm start`
+5. Add all required environment variables in the Render dashboard:
+   - `PORT`, `MONGO_URI`, `JWT_SECRET`, `WEATHER_API_KEY`, `FRONTEND_URL`
 
-### Backend (Render / Railway)
-1. Deploy the `backend/` directory as a Node.js web service
-2. Set all required environment variables in the platform dashboard
-3. Update `FRONTEND_URL` in the backend env to your live Vercel URL
-4. Update `VITE_API_BASE_URL` in the frontend env to your live backend URL
+### Frontend (Render Static Site)
+1. Create a new **Static Site** on Render and connect your GitHub repo
+2. Set the **Root Directory** to `frontend`
+3. Set **Build Command** to `npm install && npm run build`
+4. Set **Publish Directory** to `dist`
+5. Add the environment variable:
+   - `VITE_API_BASE_URL` → your live Render backend URL
+6. Add a **Redirect/Rewrite Rule** for SPA routing:
+   - Source: `/*` → Destination: `/index.html` → Action: `Rewrite`
 
 ---
 
@@ -237,21 +274,21 @@ The `frontend/vercel.json` is already configured for SPA routing. Simply connect
 
 ```
 Auth
-  POST   /api/auth/register     → Register a new user
-  POST   /api/auth/login        → Login & receive JWT
+  POST   /api/auth/register       → Register a new user
+  POST   /api/auth/login          → Login & receive JWT
 
 Weather
-  GET    /api/weather/current   → Fetch current weather by city
-  GET    /api/weather/forecast  → Fetch 5-day forecast by city
+  GET    /api/weather/current     → Fetch current weather by city
+  GET    /api/weather/forecast    → Fetch 5-day forecast by city
 
 Favorites  (🔒 Protected)
-  GET    /api/favorites         → Get user's saved cities
-  POST   /api/favorites         → Add a city to favorites
-  DELETE /api/favorites/:id     → Remove a favorite
+  GET    /api/favorites           → Get user's saved cities
+  POST   /api/favorites           → Add a city to favorites
+  DELETE /api/favorites/:id       → Remove a favorite
 
 History    (🔒 Protected)
-  GET    /api/history           → Get user's search history
-  DELETE /api/history           → Clear search history
+  GET    /api/history             → Get user's search history
+  DELETE /api/history             → Clear search history
 ```
 
 ---
