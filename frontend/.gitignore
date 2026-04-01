@@ -29,6 +29,7 @@ backend/dist/
 # Environment variables (IMPORTANT)
 # ========================
 .env
+backend/.env
 .env.*
 !.env.example
 
