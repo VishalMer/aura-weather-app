@@ -10,6 +10,7 @@ const Header = ({ theme }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   // Live clock
   useEffect(() => {
@@ -22,6 +23,9 @@ const Header = ({ theme }) => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setMobileMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -108,7 +112,8 @@ const Header = ({ theme }) => {
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300
                            ${isActive(link.path)
                              ? `bg-gradient-to-r ${getLogoGradient()} text-white shadow-md`
-                             : 'text-gray-600 hover:bg-white/50 hover:text-gray-800'}`}
+                             : 'text-white/90 hover:bg-white/20 hover:text-white'}`}
+                style={!isActive(link.path) ? { textShadow: '0 1px 4px rgba(0,0,0,0.5)' } : {}}
               >
                 <svg className="w-4 h-4" fill={link.path === '/favorites' && isActive(link.path) ? 'currentColor' : 'none'}
                   stroke="currentColor" viewBox="0 0 24 24">
@@ -122,11 +127,11 @@ const Header = ({ theme }) => {
           {/* Right Section */}
           <div className="flex items-center gap-3">
             {/* Time */}
-            <div className="text-right hidden sm:block">
-              <p className="text-sm text-gray-500">
+            <div className="text-right hidden sm:block" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
+              <p className="text-sm text-white/80">
                 {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
               </p>
-              <p className="text-lg font-semibold text-gray-700">
+              <p className="text-lg font-semibold text-white">
                 {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}
               </p>
             </div>
@@ -199,8 +204,9 @@ const Header = ({ theme }) => {
                 <Link
                   to="/login"
                   id="header-login-btn"
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800
-                             hover:bg-white/50 rounded-xl transition-all duration-300"
+                  className="px-4 py-2 text-sm font-medium text-white/90 hover:text-white
+                             hover:bg-white/20 rounded-xl transition-all duration-300"
+                  style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
                 >
                   Sign in
                 </Link>
@@ -217,76 +223,80 @@ const Header = ({ theme }) => {
             )}
 
             {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-white/50 transition-colors"
-              aria-label="Toggle menu"
-            >
-              <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {mobileMenuOpen
-                  ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                }
-              </svg>
-            </button>
+            <div className="relative md:hidden" ref={mobileMenuRef}>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                aria-label="Toggle menu"
+              >
+                <svg className="w-6 h-6 text-white drop-shadow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {mobileMenuOpen
+                    ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  }
+                </svg>
+              </button>
+
+              {/* Mobile Dropdown Menu */}
+              {mobileMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white/95 backdrop-blur-lg
+                                rounded-2xl shadow-2xl border border-gray-100 py-2 animate-fadeIn z-50">
+
+                  {/* Nav Links */}
+                  {allNavLinks.map((link) => (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-all duration-200
+                                 ${isActive(link.path)
+                                   ? `bg-gradient-to-r ${getLogoGradient()} text-white mx-2 rounded-xl`
+                                   : 'text-gray-700 hover:bg-gray-50'}`}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={link.icon} />
+                      </svg>
+                      <span className="font-medium">{link.label}</span>
+                    </Link>
+                  ))}
+
+                  {/* Divider + Auth */}
+                  <div className="border-t border-gray-100 mt-1 pt-1">
+                    {isAuthenticated ? (
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span className="font-medium">Sign out</span>
+                      </button>
+                    ) : (
+                      <div className="px-3 py-2 flex flex-col gap-1.5">
+                        <Link to="/login"
+                          className="block px-3 py-2 text-center text-sm text-gray-700 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                          Sign in
+                        </Link>
+                        <Link to="/register"
+                          className={`block px-3 py-2 text-center text-sm text-white rounded-xl font-medium bg-gradient-to-r ${getLogoGradient()}`}>
+                          Get started
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Time */}
+                  <div className="border-t border-gray-100 px-4 py-2 text-center text-xs text-gray-400">
+                    {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </nav>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg
-                          shadow-lg border-t border-gray-100 animate-fadeIn z-50">
-            <div className="p-4 space-y-2">
-              {allNavLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300
-                             ${isActive(link.path)
-                               ? `bg-gradient-to-r ${getLogoGradient()} text-white`
-                               : 'text-gray-600 hover:bg-gray-100'}`}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={link.icon} />
-                  </svg>
-                  <span className="font-medium">{link.label}</span>
-                </Link>
-              ))}
 
-              {/* Auth Buttons in Mobile */}
-              <div className="pt-3 border-t border-gray-100">
-                {isAuthenticated ? (
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-colors"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    <span className="font-medium">Sign out ({user?.name?.split(' ')[0]})</span>
-                  </button>
-                ) : (
-                  <div className="flex gap-2">
-                    <Link to="/login" className="flex-1 px-4 py-3 text-center text-gray-600 hover:bg-gray-100 rounded-xl font-medium transition-colors">
-                      Sign in
-                    </Link>
-                    <Link to="/register"
-                      className={`flex-1 px-4 py-3 text-center text-white rounded-xl font-medium
-                                  bg-gradient-to-r ${getLogoGradient()}`}>
-                      Register
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              {/* Mobile time */}
-              <div className="pt-3 border-t border-gray-100 text-center text-sm text-gray-500">
-                {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </header>
   );

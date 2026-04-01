@@ -96,7 +96,10 @@ const SearchBar = ({ onSearch, isLoading }) => {
 
       {/* Quick Search Suggestions */}
       <div className="flex flex-wrap gap-2 mt-4 justify-center">
-        <span className="text-gray-500 text-sm">Popular:</span>
+        <span
+          className="text-white/80 text-sm"
+          style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}
+        >Popular:</span>
         {['New York', 'London', 'Tokyo', 'Paris', 'Sydney'].map((suggestion) => (
           <button
             key={suggestion}
@@ -105,9 +108,10 @@ const SearchBar = ({ onSearch, isLoading }) => {
               onSearch(suggestion);
             }}
             disabled={isLoading}
-            className="px-3 py-1 text-sm bg-white/60 hover:bg-white/80 
-                       text-gray-600 rounded-full border border-gray-200
+            className="px-3 py-1 text-sm bg-white/20 hover:bg-white/35 backdrop-blur-sm
+                       text-white font-medium rounded-full border border-white/30
                        transition-all duration-200 disabled:opacity-50"
+            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}
           >
             {suggestion}
           </button>

@@ -15,6 +15,18 @@ import {
   getWeatherTheme,
 } from '../services/weatherService';
 
+// Returns gradient class + glow + shadow for text based on weather theme
+const getForecastStyle = (theme) => {
+  const styles = {
+    solar:   { gradient: 'from-amber-300 via-orange-400 to-yellow-300',  glow: 'rgba(251,191,36,0.55)',   shadow: 'rgba(251,146,60,0.25)'  },
+    storm:   { gradient: 'from-violet-300 via-purple-400 to-indigo-400', glow: 'rgba(167,139,250,0.55)',  shadow: 'rgba(139,92,246,0.25)'  },
+    rain:    { gradient: 'from-cyan-300 via-blue-400 to-sky-300',        glow: 'rgba(56,189,248,0.55)',   shadow: 'rgba(56,189,248,0.25)'  },
+    snow:    { gradient: 'from-sky-200 via-blue-200 to-slate-300',       glow: 'rgba(186,230,253,0.55)',  shadow: 'rgba(186,230,253,0.2)'  },
+    neutral: { gradient: 'from-blue-300 via-indigo-400 to-violet-400',  glow: 'rgba(129,140,248,0.55)',  shadow: 'rgba(99,102,241,0.25)'  },
+  };
+  return styles[theme] || styles.neutral;
+};
+
 const Home = ({ setTheme, setWeatherMain, theme }) => {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
@@ -83,11 +95,46 @@ const Home = ({ setTheme, setWeatherMain, theme }) => {
       {/* Search Section */}
       <section className="py-8 md:py-12">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">
-            Weather <span className="bg-gradient-to-r from-blue-500 to-indigo-600 
-                                     bg-clip-text text-transparent">Forecast</span>
-          </h1>
-          <p className="text-gray-500 text-lg">
+         <h1
+  className="text-4xl md:text-5xl font-bold text-white mb-3"
+  style={{
+    textShadow: `0 2px 8px ${getForecastStyle(theme).shadow}`,
+    WebkitTextStroke: '0.6px rgba(0, 0, 0, 0.18)',
+    paintOrder: 'stroke fill',
+    transition: 'all 0.7s ease',
+  }}
+>
+  Weather{' '}
+  <span className="relative inline-block">
+    {/* Bottom Layer: White Outline and Glow/Shadow */}
+    <span
+      className="absolute inset-0 z-0 text-transparent select-none"
+      style={{
+        WebkitTextStroke: '2px white', /* Slightly thicker stroke for a cleaner pop */
+        filter: `drop-shadow(0 2px 10px ${getForecastStyle(theme).glow})`,
+        transition: 'filter 0.7s ease',
+      }}
+      aria-hidden="true"
+    >
+      Forecast
+    </span>
+
+    {/* Top Layer: Crisp Gradient Fill */}
+    <span
+      className={`relative z-10 bg-gradient-to-r ${getForecastStyle(theme).gradient} bg-clip-text text-transparent`}
+      style={{
+        WebkitTextStroke: '0', /* Overrides the 0.6px black stroke from the h1 */
+        textShadow: 'none', /* Prevents inheriting the h1 textShadow inside the gradient */
+      }}
+    >
+      Forecast
+    </span>
+  </span>
+</h1>
+          <p
+            className="text-white/80 text-lg"
+            style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
+          >
             Enter a city name to get the current weather and forecast
           </p>
         </div>
