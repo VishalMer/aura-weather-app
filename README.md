@@ -27,7 +27,7 @@
 
 <div align="center">
   <img src="https://placehold.co/900x500/1a1a2e/61DAFB?text=App+Demo+GIF+Coming+Soon" alt="Aura Weather App Demo" width="100%" />
-  <p><em>Add your screen recording GIF here</em></p>
+  <!-- <p><em>Add your screen recording GIF here</em></p> -->
 </div>
 
 ---
