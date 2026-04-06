@@ -1,7 +1,8 @@
 import axios from "axios";
 
+// Create axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL, // No localhost fallback (production safe)
 });
 
 // Attach token automatically on every request
@@ -13,15 +14,19 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// On 401 → clear token and redirect to login
+// Handle unauthorized responses (401)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      // Only redirect if not already on auth page
-      if (!window.location.pathname.startsWith("/login") && !window.location.pathname.startsWith("/register")) {
+
+      // Redirect only if not already on auth pages
+      if (
+        !window.location.pathname.startsWith("/login") &&
+        !window.location.pathname.startsWith("/register")
+      ) {
         window.location.href = "/login";
       }
     }
