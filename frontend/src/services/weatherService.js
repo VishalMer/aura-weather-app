@@ -3,10 +3,9 @@ import api from "./api";
 // ─── Weather API calls (all through our backend) ────────────────────────────
 
 export const getCurrentWeather = async (city) => {
-  const res = await api.get(`/weather/${encodeURIComponent(city)}`);
-  // Backend returns { source, data } — data is already normalized
+  const res = await api.get(`/api/weather/${encodeURIComponent(city)}`);
   const raw = res.data.data;
-  // Convert ISO string dates back to Date objects for components
+
   return {
     ...raw,
     sunrise: new Date(raw.sunrise),
@@ -16,15 +15,15 @@ export const getCurrentWeather = async (city) => {
 };
 
 export const getForecast = async (city) => {
-  const res = await api.get(`/weather/forecast/${encodeURIComponent(city)}`);
-  // Convert date strings to Date objects
+  const res = await api.get(`/api/weather/forecast/${encodeURIComponent(city)}`);
+
   return res.data.data.map((day) => ({
     ...day,
     date: new Date(day.date),
   }));
 };
 
-// ─── Theme Mapping (based on weather condition) ──────────────────────────────
+// ─── Theme Mapping ──────────────────────────────
 
 export const getWeatherTheme = (weatherMain) => {
   const themeMap = {
@@ -47,12 +46,11 @@ export const getWeatherTheme = (weatherMain) => {
   return themeMap[weatherMain] || "neutral";
 };
 
-// ─── Weather Icon (from OpenWeather CDN) ────────────────────────────────────
+// ─── Weather Icons ──────────────────────────────
 
 export const getWeatherIconUrl = (iconCode) =>
   `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
-// Legacy icon helper used by existing components (maps by condition name)
 export const getWeatherIcon = (weatherMain) => {
   const iconMap = {
     Clear: "https://openweathermap.org/img/wn/01d@2x.png",
@@ -71,5 +69,4 @@ export const getWeatherIcon = (weatherMain) => {
   return iconMap[weatherMain] || "https://openweathermap.org/img/wn/01d@2x.png";
 };
 
-// Back-compat alias
 export const fetchWeather = getCurrentWeather;
