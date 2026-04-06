@@ -40,29 +40,29 @@ const History = () => {
   }, []);
 
   const loadHistory = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get('/history');
-      setHistory(res.data);
-    } catch (err) {
-      console.error('Failed to load history:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  try {
+    const res = await api.get('/api/history');
+    setHistory(res.data);
+  } catch (err) {
+    console.error('Failed to load history:', err);
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handleClearAll = async () => {
-    if (!window.confirm('Clear all search history?')) return;
-    setClearing(true);
-    try {
-      await api.delete('/history');
-      setHistory([]);
-    } catch (err) {
-      console.error('Failed to clear history:', err);
-    } finally {
-      setClearing(false);
-    }
-  };
+const handleClearAll = async () => {
+  if (!window.confirm('Clear all search history?')) return;
+  setClearing(true);
+  try {
+    await api.delete('/api/history');
+    setHistory([]);
+  } catch (err) {
+    console.error('Failed to clear history:', err);
+  } finally {
+    setClearing(false);
+  }
+};
 
   const handleCityClick = (city) => {
     navigate('/', { state: { city } });
