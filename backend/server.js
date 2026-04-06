@@ -16,12 +16,13 @@ const app = express();
 
 // Security Middleware
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://aura-weather-app-gamma.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Rate Limiting — 100 requests per 15 minutes per IP
