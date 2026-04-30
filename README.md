@@ -17,7 +17,7 @@
 
 <br />
 
-[🌐 Live Demo](#) &nbsp;|&nbsp; [📸 Screenshots](#-screenshots) &nbsp;|&nbsp; [🚀 Quick Start](#-quick-start) &nbsp;|&nbsp; [📁 Project Structure](#-project-structure)
+[🌐 Live Demo](https://aura-weather-app-gamma.vercel.app/) &nbsp;|&nbsp; [📸 Screenshots](#-screenshots) &nbsp;|&nbsp; [🚀 Quick Start](#-quick-start) &nbsp;|&nbsp; [📁 Project Structure](#-project-structure)
 
 </div>
 
@@ -226,47 +226,56 @@ VITE_API_BASE_URL=http://localhost:5000/api
 
 <div align="center">
 
-| Home Page | Forecast View |
+| Home Page | Forecast View |  
+
+
+
 |---|---|
-| <img src="https://placehold.co/500x300/0f0f1a/61DAFB?text=Home+Page" width="100%" /> | <img src="https://placehold.co/500x300/0f0f1a/61DAFB?text=Forecast+View" width="100%" /> |
+| <img width="1158" height="905" alt="Screenshot 2026-04-30 222748" src="https://github.com/user-attachments/assets/2c6889ed-9e05-4884-8dc3-0cd8a78e3113" /> | <img width="1148" height="833" alt="Screenshot 2026-04-30 223252" src="https://github.com/user-attachments/assets/3bc74730-11b4-4752-87f5-b8b583e3477e" /> |
 
 | Favorites | Search History |
 |---|---|
-| <img src="https://placehold.co/500x300/0f0f1a/61DAFB?text=Favorites+Page" width="100%" /> | <img src="https://placehold.co/500x300/0f0f1a/61DAFB?text=History+Page" width="100%" /> |
+| <img width="1162" height="951" alt="Screenshot 2026-04-30 223418" src="https://github.com/user-attachments/assets/8eed34a5-c829-458b-9e2e-a3701389d1bc"  /> | <img width="1139" height="860" alt="Screenshot 2026-04-30 223448" src="https://github.com/user-attachments/assets/9a7dde69-191f-418d-a166-659c7f7af706"  /> |
 
 </div>
 
-> 📌 Replace the placeholders above with real screenshots from your app.
+>
 
 ---
 
 ## 🌐 Deployment
 
-Both the frontend and backend are deployed on **[Render](https://render.com)**.
+### Live Application
 
-| Part | Platform | Type |
+| Component | Platform | URL |
 |---|---|---|
-| Frontend | [Render](https://render.com) | Static Site |
-| Backend | [Render](https://render.com) | Web Service (Node.js) |
+| Frontend | [Vercel](https://vercel.com) | [aura-weather-app-gamma.vercel.app](https://aura-weather-app-gamma.vercel.app/) |
+| Backend | [Render](https://render.com) | Available at deployment URL |
 | Database | [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) | Cloud Database |
 
+### Frontend (Vercel)
+The frontend is deployed as a static site on Vercel:
+1. Connect your GitHub repo to Vercel
+2. Set the **Framework Preset** to Vite
+3. Set **Root Directory** to `frontend`
+4. Set **Build Command** to `npm install && npm run build`
+5. Set **Output Directory** to `dist`
+6. Add environment variable:
+   - `VITE_API_BASE_URL` → your live Render backend API URL
+7. Configure SPA routing if needed for client-side routing
+
 ### Backend (Render Web Service)
+The backend is deployed as a Node.js web service on Render:
 1. Create a new **Web Service** on Render and connect your GitHub repo
 2. Set the **Root Directory** to `backend`
 3. Set **Build Command** to `npm install`
 4. Set **Start Command** to `npm start`
 5. Add all required environment variables in the Render dashboard:
-   - `PORT`, `MONGO_URI`, `JWT_SECRET`, `WEATHER_API_KEY`, `FRONTEND_URL`
-
-### Frontend (Render Static Site)
-1. Create a new **Static Site** on Render and connect your GitHub repo
-2. Set the **Root Directory** to `frontend`
-3. Set **Build Command** to `npm install && npm run build`
-4. Set **Publish Directory** to `dist`
-5. Add the environment variable:
-   - `VITE_API_BASE_URL` → your live Render backend URL
-6. Add a **Redirect/Rewrite Rule** for SPA routing:
-   - Source: `/*` → Destination: `/index.html` → Action: `Rewrite`
+   - `PORT=5000` or use Render's assigned port
+   - `MONGO_URI` → your MongoDB Atlas connection string
+   - `JWT_SECRET` → your secure JWT secret key
+   - `WEATHER_API_KEY` → your OpenWeatherMap API key
+   - `FRONTEND_URL` → your Vercel frontend URL (`https://aura-weather-app-gamma.vercel.app`)
 
 ---
 
