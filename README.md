@@ -226,16 +226,13 @@ VITE_API_BASE_URL=http://localhost:5000/api
 
 <div align="center">
 
-| Home Page | Forecast View |  
-
-
-
+| Home Page | Forecast View |
 |---|---|
-| <img width="1158" height="905" alt="Screenshot 2026-04-30 222748" src="https://github.com/user-attachments/assets/2c6889ed-9e05-4884-8dc3-0cd8a78e3113" /> | <img width="1148" height="833" alt="Screenshot 2026-04-30 223252" src="https://github.com/user-attachments/assets/3bc74730-11b4-4752-87f5-b8b583e3477e" /> |
+| <img src="https://github.com/user-attachments/assets/2c6889ed-9e05-4884-8dc3-0cd8a78e3113" width="100%" /> | <img src="https://github.com/user-attachments/assets/3bc74730-11b4-4752-87f5-b8b583e3477e" width="100%" /> |
 
 | Favorites | Search History |
 |---|---|
-| <img width="1162" height="951" alt="Screenshot 2026-04-30 223418" src="https://github.com/user-attachments/assets/8eed34a5-c829-458b-9e2e-a3701389d1bc"  /> | <img width="1139" height="860" alt="Screenshot 2026-04-30 223448" src="https://github.com/user-attachments/assets/9a7dde69-191f-418d-a166-659c7f7af706"  /> |
+| <img src="https://github.com/user-attachments/assets/8eed34a5-c829-458b-9e2e-a3701389d1bc" width="100%" /> | <img src="https://github.com/user-attachments/assets/bde3fbce-c98c-4a80-8d71-ed87e1457a0d" width="100%" /> |
 
 </div>
 
@@ -327,8 +324,7 @@ This project is licensed under the **MIT License** — feel free to use it in yo
 **Vishal Mer**
 
 [![GitHub](https://img.shields.io/badge/GitHub-@VishalMer-181717?style=for-the-badge&logo=github)](https://github.com/VishalMer)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/vishalmer)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-FF5733?style=for-the-badge&logo=firefox)](https://yourportfolio.dev)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/vishal-mer)
 
 </div>
 
